@@ -1,15 +1,18 @@
 {
   "name": "yapper",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
+  "packageManager": "pnpm@10.13.1",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.25.1",
+    "babel-plugin-react-compiler": "19.1.0-rc.2",
     "next": "15.4.1",
     "react": "19.1.0",
     "react-dom": "19.1.0"
