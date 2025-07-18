@@ -6,6 +6,8 @@ export default defineSchema({
     name: v.string(),
     username: v.optional(v.string()),
     externalId: v.string(), // This is the Clerk ID, stored in the subject JWT field
+    channelsOwned: v.optional(v.array(v.id("channels"))),
+    channelsIn: v.optional(v.array(v.id("channels"))),
     updatedAt: v.optional(v.string()),
   }).index("byExternalId", ["externalId"]),
 
@@ -15,7 +17,7 @@ export default defineSchema({
     status: v.union(
       v.literal("pending"),
       v.literal("accepted"),
-      v.literal("blocked")
+      v.literal("blocked"),
     ),
     createdAt: v.number(),
   })
@@ -24,23 +26,19 @@ export default defineSchema({
 
   channels: defineTable({
     name: v.string(),
+    participants: v.array(v.id("users")),
     ownerId: v.id("users"),
     createdAt: v.number(),
-  }).index("byOwnerId", ["ownerId"]),
-
-  channelMemberships: defineTable({
-    channelId: v.id("channels"),
-    userId: v.id("users"),
-    joinedAt: v.number(),
   })
-    .index("byChannel", ["channelId"])
-    .index("byUser", ["userId"])
-    .index("byUserChannel", ["userId", "channelId"]),
+    .index("byName", ["name"])
+    .index("byCreatedAt", ["createdAt"]),
 
   messages: defineTable({
-    channelId: v.id("channels"),
-    userId: v.id("users"),
+    channel: v.id("channels"),
+    authorId: v.id("users"),
     body: v.string(),
-    createdAt: v.number(),
-  }).index("byChannel", ["channelId"]),
+    sentAt: v.number(),
+  })
+    .index("bySentAt", ["sentAt"])
+    .index("byChannel", ["channel"]),
 });

@@ -27,6 +27,8 @@ export const store = mutation({
       name: name ?? "Unknown",
       username,
       externalId,
+      channelsOwned: [],
+      channelsIn: [],
       updatedAt,
     });
   },
@@ -46,6 +48,8 @@ export const upsertFromClerk = internalMutation({
       name: `${data.first_name} ${data.last_name}`,
       username: typeof data.username === "string" ? data.username : "unknown",
       externalId: data.id,
+      channelsOwned: [],
+      channelsIn: [],
       createdAt: Date.now(),
     };
 
@@ -67,7 +71,7 @@ export const deleteFromClerk = internalMutation({
       await ctx.db.delete(user._id);
     } else {
       console.warn(
-        `Can't delete user, there is none for Clerk user ID: ${clerkUserId}`
+        `Can't delete user, there is none for Clerk user ID: ${clerkUserId}`,
       );
     }
   },

@@ -32,6 +32,7 @@ export default function RootLayout({
       >
         <ClerkProvider
           appearance={{
+            cssLayerName: "clerk",
             baseTheme: dark,
             // layout: {
             //   unsafe_disableDevelopmentModeWarnings: true,

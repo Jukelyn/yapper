@@ -2,59 +2,53 @@ import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
 import { getCurrentUserOrThrow } from "./users";
 
-// Send a message to a channel
-export const send = mutation({
+export const getMessagesPaginated = query({
   args: {
-    body: v.string(),
     channelId: v.id("channels"),
+    cursor: v.optional(v.string()),
+    limit: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
-    const user = await getCurrentUserOrThrow(ctx);
+    const PAGE_SIZE = args.limit ?? 20;
 
-    // Optional: check user is in the channel
-    const membership = await ctx.db
-      .query("channelMemberships")
-      .withIndex("byUserChannel", (q) =>
-        q.eq("userId", user._id).eq("channelId", args.channelId)
-      )
-      .unique();
+    const messagesQuery = ctx.db
+      .query("messages")
+      .withIndex("byChannel", (q) => q.eq("channel", args.channelId))
+      .order("desc"); // Newest first
 
-    if (!membership) {
-      throw new Error("You are not a member of this channel.");
-    }
-
-    await ctx.db.insert("messages", {
-      body: args.body,
-      channelId: args.channelId,
-      userId: user._id,
-      createdAt: Date.now(),
+    const page = await messagesQuery.paginate({
+      cursor: args.cursor ?? null,
+      numItems: PAGE_SIZE,
     });
+
+    return page;
+    // { page: Doc[], isDone: boolean, continueCursor: string | null }
   },
 });
 
-// Get all messages for a channel
-export const getForChannel = query({
+export const sendMessage = mutation({
   args: {
     channelId: v.id("channels"),
+    body: v.string(),
   },
   handler: async (ctx, args) => {
     const user = await getCurrentUserOrThrow(ctx);
 
-    const membership = await ctx.db
-      .query("channelMemberships")
-      .withIndex("byUserChannel", (q) =>
-        q.eq("userId", user._id).eq("channelId", args.channelId)
-      )
-      .unique();
+    // probably don't need this but whatever
+    const channel = await ctx.db.get(args.channelId);
+    if (!channel) throw new Error("Channel not found.");
 
-    if (!membership) {
+    if (!channel.participants.includes(user._id)) {
       throw new Error("You are not a member of this channel.");
     }
 
-    return await ctx.db
-      .query("messages")
-      .withIndex("byChannel", (q) => q.eq("channelId", args.channelId))
-      .order("asc") // Optional: order oldest to newest
-      .collect();
+    const messageId = await ctx.db.insert("messages", {
+      channel: args.channelId,
+      authorId: user._id,
+      body: args.body,
+      sentAt: Date.now(),
+    });
+
+    return messageId;
   },
 });
