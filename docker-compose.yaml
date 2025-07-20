@@ -1,0 +1,14 @@
+---
+services:
+  yapper:
+    container_name: yapper
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    networks:
+      - main_sites
+
+networks:
+  main_sites:
+    external: true
