@@ -14,7 +14,8 @@ permissions:
 
 jobs:
   copy_env:
-    name: "Create env file"
-    run: |
-      touch .env
-      echo ${{ secrets.ENV_PROD }} > .env
+    steps:
+      - name: "Create env file"
+      - run: |
+          touch .env
+          echo ${{ secrets.ENV_PROD }} > .env
