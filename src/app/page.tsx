@@ -19,6 +19,7 @@ import { useChatSocket } from "@/hooks/useChatSocket";
 import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
 import SplitText from "@/components/LandingPage";
+import { redirect } from "next/navigation";
 
 function App() {
   const { isLoading, isAuthenticated } = useStoreUserEffect();
@@ -154,7 +155,11 @@ function App() {
                   </span>
                 </div>
                 <button className="ml-auto text-gray-400 hover:text-white">
-                  <Settings />
+                  <Settings
+                    onClick={() =>
+                      redirect("https://accounts.jukelyn.com/user")
+                    }
+                  />
                 </button>
               </div>
             </div>
