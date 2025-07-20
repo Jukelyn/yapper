@@ -36,7 +36,7 @@ export default function SplitText({
         },
       );
     });
-  }, []);
+  }, [durationValue, staggerValue]);
 
   return (
     <div className="container" ref={containerRef}>
