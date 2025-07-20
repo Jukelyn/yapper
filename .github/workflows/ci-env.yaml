@@ -16,6 +16,6 @@ jobs:
   copy_env:
     steps:
       - name: "Create env file"
-      - run: |
+        run: |
           touch .env
           echo ${{ secrets.ENV_PROD }} > .env
