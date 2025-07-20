@@ -18,6 +18,7 @@ import Image from "next/image";
 import { useChatSocket } from "@/hooks/useChatSocket";
 import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
+import SplitText from "@/components/LandingPage";
 
 function App() {
   const { isLoading, isAuthenticated } = useStoreUserEffect();
@@ -85,12 +86,28 @@ function App() {
                   {!isLoading && !isAuthenticated && (
                     <>
                       <h2 className="mb-4 text-2xl font-bold">
-                        Welcome to Yapper
+                        <SplitText
+                          text={"Welcome to Yapper!"}
+                          durationValue={1}
+                          staggerValue={0.05}
+                        />
                       </h2>
                       <h2 className="mb-4 text-xl">
-                        Get started by creating an account!
+                        <SplitText
+                          text={"Get started by creating an account!"}
+                          durationValue={2}
+                          staggerValue={0.1}
+                        />
                       </h2>
-                      <CustomSignInButton />
+                      <div className="flex items-center justify-center">
+                        <Image
+                          src="/yappa-cata.webp"
+                          alt="Yapper logo"
+                          width={64}
+                          height={64}
+                        />
+                        <CustomSignInButton />
+                      </div>
                     </>
                   )}
                 </div>
