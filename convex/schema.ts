@@ -8,6 +8,7 @@ export default defineSchema({
     externalId: v.string(), // This is the Clerk ID, stored in the subject JWT field
     channelsOwned: v.optional(v.array(v.id("channels"))),
     channelsIn: v.optional(v.array(v.id("channels"))),
+    createdAt: v.optional(v.string()),
     updatedAt: v.optional(v.string()),
   }).index("byExternalId", ["externalId"]),
 
@@ -19,7 +20,7 @@ export default defineSchema({
       v.literal("accepted"),
       v.literal("blocked"),
     ),
-    createdAt: v.number(),
+    createdAt: v.string(),
   })
     .index("byFrom", ["from"])
     .index("byTo", ["to"]),
@@ -28,7 +29,7 @@ export default defineSchema({
     name: v.string(),
     participants: v.array(v.id("users")),
     ownerId: v.id("users"),
-    createdAt: v.number(),
+    createdAt: v.string(),
   })
     .index("byName", ["name"])
     .index("byCreatedAt", ["createdAt"]),

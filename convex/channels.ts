@@ -31,7 +31,7 @@ export const createChannel = mutation({
       name,
       participants: [user._id],
       ownerId: user._id,
-      createdAt: Date.now(),
+      createdAt: Date.now().toString(),
     });
 
     await ctx.db.patch(user._id, {
