@@ -1,0 +1,20 @@
+---
+name: CI-ENV
+
+on:
+  workflow_run:
+    workflows: ["CI-SFTP"]
+    types:
+      - completed
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  copy_env:
+    name: "Create env file"
+    run: |
+      touch .env
+      echo ${{ secrets.ENV_PROD }} > .env
