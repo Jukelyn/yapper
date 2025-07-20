@@ -3,7 +3,7 @@ name: Docker Build
 
 on:
   workflow_run:
-    workflows: ["CI-ENV"]
+    workflows: ["CI-SFTP"]
     types:
       - completed
 
