@@ -1,6 +1,6 @@
 {
   "name": "yapper",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "packageManager": "pnpm@10.13.1",
   "scripts": {
@@ -23,6 +23,7 @@
     "babel-plugin-react-compiler": "19.1.0-rc.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "concurrently": "^9.2.0",
     "convex": "^1.25.4",
     "date-fns": "^4.1.0",
     "lucide-react": "^0.525.0",
@@ -44,7 +45,6 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/ws": "^8.18.1",
-    "concurrently": "^9.2.0",
     "eslint": "^9",
     "eslint-config-next": "15.4.1",
     "prettier": "^3.6.2",
