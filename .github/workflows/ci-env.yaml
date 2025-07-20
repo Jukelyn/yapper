@@ -14,6 +14,7 @@ permissions:
 
 jobs:
   copy_env:
+    runs-on: ubuntu-latest
     steps:
       - name: "Create env file"
         run: |
