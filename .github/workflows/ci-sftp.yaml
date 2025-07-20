@@ -36,4 +36,5 @@ jobs:
           remote_path: ${{ secrets.REMOTE_PATH }}
           delete_remote_files: true
           # sftp args
-          args: "-o ConnectTimeout=5"
+          sftpArgs: "-o ConnectTimeout=5"
+          rsyncArgs: "--exclude=node_modules --exclude=.git --exclude=*.log"
