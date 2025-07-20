@@ -19,4 +19,5 @@ COPY --from=base /app/package.json /app/package.json
 COPY --from=base /app/pnpm-lock.yaml /app/pnpm-lock.yaml
 COPY --from=base /app/public /app/public
 
+EXPOSE 8000
 CMD [ "pnpm", "start" ]
