@@ -8,7 +8,7 @@
     "next": "next dev --turbopack",
     "ws": "ts-node src/server/index.ts",
     "build": "next build",
-    "start": "next start",
+    "start": "concurrently \"npx convex deploy\" \"next start\"",
     "lint": "next lint",
     "typecheck": "tsc --noEmit"
   },
