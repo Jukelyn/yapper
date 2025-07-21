@@ -4,10 +4,6 @@ name: CI-Lint
 on:
   push:
     branches: [main]
-    paths:
-      - "src/**"
-      - "convex/**"
-      - "public/**"
 
   workflow_dispatch:
 
