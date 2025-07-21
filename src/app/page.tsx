@@ -156,7 +156,7 @@ function App() {
                 </div>
                 <button
                   className="ml-auto text-gray-400 hover:text-white"
-                  onClick={() => redirect("https://accounts.jukelyn.com/user")}
+                  onClick={() => redirect("/user-profile")}
                 >
                   <Settings />
                 </button>
