@@ -7,7 +7,6 @@ import {
   useQuery,
   useMutation,
 } from "convex/react";
-import { RedirectToSignIn } from "@/components/RedirectToSignIn";
 import { useStoreUserEffect } from "./useStoreUserEffect";
 import CustomSignInButton from "@/components/ui/CustomSignInButton";
 import { ChannelList } from "@/components/ChannelList";
@@ -116,7 +115,6 @@ function App() {
               </div>
             </div>
           </main>
-          <RedirectToSignIn />
         </Unauthenticated>
 
         <Authenticated>
