@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useChatSocket } from "@/hooks/useChatSocket";
 import { api } from "../../convex/_generated/api";
-import { Id } from "../../convex/_generated/dataModel";
+import { Id, Doc } from "../../convex/_generated/dataModel";
 import SplitText from "@/components/LandingPage";
 import { redirect } from "next/navigation";
 
@@ -28,13 +28,13 @@ function App() {
   // react compiler baby, no need for useMemo
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const channels = useQuery(api.channels.getChannels) ?? [];
-  const [selectedChannel, setSelectedChannel] = useState<string | null>(null);
+  const [selectedChannel, setSelectedChannel] = useState<Doc<"channels">>();
   const [joinedChannels, setJoinedChannels] = useState<string[]>([]);
 
   // When channels load, select first if none selected
   useEffect(() => {
     if (!selectedChannel && channels.length > 0) {
-      setSelectedChannel(channels[0]._id);
+      setSelectedChannel(channels[0]);
     }
   }, [channels, selectedChannel]);
 
@@ -54,11 +54,15 @@ function App() {
     if (!trimmedName) return;
 
     try {
-      const newId = await createChannel({ name: trimmedName });
-      await joinChannelMutation({ channelId: newId });
+      const newChannel = await createChannel({ name: trimmedName });
+      if (!newChannel) {
+        throw Error("Something went wrong when creating the channel.");
+      }
 
-      setSelectedChannel(newId);
-      setJoinedChannels((jc) => [...jc, newId]);
+      await joinChannelMutation({ channelId: newChannel._id });
+
+      setSelectedChannel(newChannel);
+      setJoinedChannels((jc) => [...jc, newChannel._id]);
     } catch (e) {
       alert("Error creating channel: " + (e as Error).message);
     }
@@ -68,9 +72,10 @@ function App() {
     await deleteChannel({ channelId: id as Id<"channels"> });
   }
 
-  const channelId = selectedChannel ?? "";
+  const currentChannel = selectedChannel ?? channels[0];
+
   const { messages, sendMessage } = useChatSocket(
-    channelId,
+    currentChannel,
     user?.username ?? undefined,
   );
 
@@ -134,7 +139,7 @@ function App() {
                 channels={channels}
                 joinedChannels={joinedChannels}
                 setJoinedChannels={setJoinedChannels}
-                selectedChannel={selectedChannel ?? ""}
+                selectedChannel={selectedChannel ?? channels[0]}
                 setSelectedChannel={setSelectedChannel}
                 handleCreateChannel={handleCreateChannel}
                 handleDeleteChannel={handleDeleteChannel}
@@ -168,7 +173,7 @@ function App() {
               <div className="mb-4 inline-flex gap-2 border-b p-4 text-2xl font-semibold text-white">
                 <MessageCircle className="h-8 w-8" />
                 <h2>
-                  {channels.find((c) => c._id === selectedChannel)?.name ??
+                  {channels.find((c) => c._id === selectedChannel?._id)?.name ??
                     "Welcome!"}
                 </h2>
                 <div className="ml-auto flex items-center space-x-1 text-gray-400">
@@ -204,8 +209,8 @@ function App() {
                       }
                     }}
                     placeholder={`Message to ${
-                      channels.find((c) => c._id === selectedChannel)?.name ??
-                      ""
+                      channels.find((c) => c._id === selectedChannel?._id)
+                        ?.name ?? ""
                     }`}
                     className="flex-1 font-semibold"
                     disabled={isLoading}

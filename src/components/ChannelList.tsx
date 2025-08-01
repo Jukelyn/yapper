@@ -3,6 +3,10 @@ import { Button } from "./ui/button";
 import { ChevronsRight, Trash } from "lucide-react";
 import { Input } from "./ui/input";
 import { z } from "zod";
+import { useUser } from "@clerk/nextjs";
+import { useQuery } from "convex/react";
+import { api } from "../../convex/_generated/api";
+import { Doc } from "../../convex/_generated/dataModel";
 
 const channelNameSchema = z
   .string()
@@ -10,11 +14,11 @@ const channelNameSchema = z
   .regex(/^[\x00-\x7F]*$/, "Only ASCII characters are allowed");
 
 interface ChannelListProps {
-  channels: { _id: string; name: string }[];
+  channels: Doc<"channels">[];
   joinedChannels: string[];
   setJoinedChannels: React.Dispatch<React.SetStateAction<string[]>>;
-  selectedChannel: string;
-  setSelectedChannel: (id: string) => void;
+  selectedChannel: Doc<"channels">;
+  setSelectedChannel: (channel: Doc<"channels">) => void;
   handleCreateChannel: (name: string) => void;
   handleDeleteChannel: (id: string) => void;
 }
@@ -28,6 +32,8 @@ export function ChannelList({
   handleCreateChannel,
   handleDeleteChannel,
 }: ChannelListProps) {
+  const convexUser = useQuery(api.users.current);
+
   const [newChannelName, setNewChannelName] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -54,17 +60,19 @@ export function ChannelList({
                   className={
                     "hover:bg-secondary/20 w-full rounded p-1 text-left font-bold"
                   }
-                  onClick={() => setSelectedChannel(channel._id)}
+                  onClick={() => setSelectedChannel(channel)}
                 >
-                  {selectedChannel === channel._id ? (
+                  {selectedChannel._id === channel._id ? (
                     <div className="flex justify-between">
                       <div className="flex items-center gap-2">
                         <ChevronsRight className="w-5" /> {channel.name}
                       </div>
-                      <Trash
-                        className="w-5"
-                        onClick={() => handleDeleteChannel(channel._id)}
-                      />
+                      {convexUser && convexUser._id === channel.ownerId && (
+                        <Trash
+                          className="w-5"
+                          onClick={() => handleDeleteChannel(channel._id)}
+                        />
+                      )}
                     </div>
                   ) : (
                     `# ${channel.name}`

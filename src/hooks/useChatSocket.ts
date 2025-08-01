@@ -1,13 +1,18 @@
 import { useEffect, useRef, useState } from "react";
+import { Doc } from "../../convex/_generated/dataModel";
 
 type ChatMessage = {
   type: "message" | "system";
   body: string;
   username?: string;
   sentAt?: number;
+  channel: Doc<"channels">;
 };
 
-export function useChatSocket(channel: string, username: string | undefined) {
+export function useChatSocket(
+  channel: Doc<"channels">,
+  username: string | undefined,
+) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const socketRef = useRef<WebSocket | null>(null);
 
@@ -22,17 +27,28 @@ export function useChatSocket(channel: string, username: string | undefined) {
     };
 
     socket.onmessage = (event) => {
-      const msg = JSON.parse(event.data);
-      setMessages((prev) => [...prev, msg]);
+      const msg: ChatMessage = JSON.parse(event.data);
+      setMessages((prev) => {
+        // Reset if message is for another channel
+        if (!msg.channel || msg.channel._id !== channel._id) return prev;
+        return [...prev, msg];
+      });
     };
 
     socket.onclose = () => {
-      socket.send(JSON.stringify({ type: "leave", channel, username }));
+      console.log("WebSocket connection closed");
     };
 
     return () => {
-      socket.send(JSON.stringify({ type: "leave", channel, username }));
-      socket.close();
+      if (
+        socketRef.current &&
+        socketRef.current.readyState === WebSocket.OPEN
+      ) {
+        socketRef.current.send(
+          JSON.stringify({ type: "leave", channel, username }),
+        );
+        socketRef.current.close();
+      }
     };
   }, [channel, username]);
 

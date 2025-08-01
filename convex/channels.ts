@@ -40,7 +40,14 @@ export const createChannel = mutation({
         : [newChannelId],
     });
 
-    return newChannelId;
+    await ctx.db.patch(user._id, {
+      channelsOwned: user.channelsOwned
+        ? [...user.channelsOwned, newChannelId]
+        : [newChannelId],
+    });
+
+    const createdChannel = ctx.db.get(newChannelId);
+    return createdChannel;
   },
 });
 
@@ -93,8 +100,25 @@ export const deleteChannel = mutation({
 
     if (
       channel.participants.includes(user._id) &&
-      channel.ownerId == user._id
+      channel.ownerId === user._id
     ) {
+      for (const userId of channel.participants) {
+        const participant = await ctx.db.get(userId);
+        if (!participant) continue;
+
+        const updatedChannelsIn = (participant.channelsIn || []).filter(
+          (id) => id !== channelId,
+        );
+
+        const updatedChannelsOwned = (participant.channelsOwned || []).filter(
+          (id) => id !== channelId,
+        );
+
+        await ctx.db.patch(userId, {
+          channelsIn: updatedChannelsIn,
+          channelsOwned: updatedChannelsOwned,
+        });
+      }
       await ctx.db.delete(channel._id);
     }
   },

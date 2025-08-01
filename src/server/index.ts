@@ -1,6 +1,36 @@
 import { createServer } from "http";
 import WebSocket, { WebSocketServer } from "ws";
-import { WSMessage, ClientInfo } from "@/types/wschannel";
+
+type WSMessage =
+  | {
+      type: "system";
+      body: string;
+      channel: string;
+    }
+  | {
+      type: "join";
+      channel: string;
+      username: string;
+    }
+  | {
+      type: "leave";
+      channel: string;
+      username: string;
+    }
+  | {
+      type: "message";
+      channel: string;
+      authorId: string;
+      username: string;
+      body: string;
+      sentAt: number;
+    };
+
+type ClientInfo = {
+  channel: string;
+  username: string;
+};
+
 const server = createServer();
 const wss = new WebSocketServer({ server });
 
@@ -22,6 +52,7 @@ wss.on("connection", (socket) => {
           broadcastToChannel(msg.channel, {
             type: "system",
             body: `${msg.username} has joined the chat.`,
+            channel: msg.channel,
           });
         }
         break;
@@ -36,6 +67,7 @@ wss.on("connection", (socket) => {
           broadcastToChannel(msg.channel, {
             type: "system",
             body: `${msg.username} has left the chat.`,
+            channel: msg.channel,
           });
         }
 
@@ -51,6 +83,7 @@ wss.on("connection", (socket) => {
       broadcastToChannel(info.channel, {
         type: "system",
         body: `${info.username} left the chat.`,
+        channel: info.channel,
       });
       clientInfoMap.delete(socket);
     }
