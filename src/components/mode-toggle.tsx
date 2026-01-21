@@ -1,0 +1,29 @@
+"use client";
+
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Sun, Moon } from "lucide-react";
+
+export function ModeToggle() {
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  // Only render after hydration to prevent mismatch
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted) return null;
+
+  const isDark = theme === "dark";
+
+  return (
+    <Button
+      variant="outline"
+      size="sm"
+      onClick={() => setTheme(isDark ? "light" : "dark")}
+      className="flex items-center justify-center gap-2"
+    >
+      {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+    </Button>
+  );
+}
