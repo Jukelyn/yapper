@@ -10,7 +10,12 @@ export function ModeToggle() {
   const [mounted, setMounted] = useState(false);
 
   // Only render after hydration to prevent mismatch
-  useEffect(() => setMounted(true), []);
+  useEffect(
+    () =>
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setMounted(true),
+    [],
+  );
 
   if (!mounted) return null;
 
@@ -19,7 +24,7 @@ export function ModeToggle() {
   return (
     <Button
       variant="outline"
-      size="sm"
+      size="icon"
       onClick={() => setTheme(isDark ? "light" : "dark")}
       className="flex items-center justify-center gap-2"
     >
