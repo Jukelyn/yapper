@@ -18,7 +18,7 @@ import {
 import { Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { Pacifico } from "@next/font/google";
+import { Pacifico } from "next/font/google";
 import Link from "next/link";
 
 const pacifico = Pacifico({
@@ -70,6 +70,9 @@ export default function YapperNavBar() {
           </SignInButton>
         </Unauthenticated>
         <Authenticated>
+          <Link href={"/app"}>
+            <Button>Open Yapper</Button>
+          </Link>
           <UserButton />
         </Authenticated>
 
