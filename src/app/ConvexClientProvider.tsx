@@ -17,10 +17,7 @@ export default function ConvexClientProvider({
   children: ReactNode;
 }) {
   return (
-    <ConvexProviderWithClerk
-      client={convex}
-      useAuth={useAuth}
-    >
+    <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
       {children}
     </ConvexProviderWithClerk>
   );

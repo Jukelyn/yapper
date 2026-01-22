@@ -28,7 +28,7 @@ export function ModeToggle() {
       onClick={() => setTheme(isDark ? "light" : "dark")}
       className="flex items-center justify-center gap-2"
     >
-      {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+      {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
     </Button>
   );
 }
