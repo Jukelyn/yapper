@@ -57,10 +57,10 @@
   --muted-foreground: oklch(0.552 0.016 285.938);
   --destructive: oklch(0.577 0.245 27.325);
 
-  --foreground: oklch(0.141 0.005 285.823);
-  --card-foreground: oklch(0.141 0.005 285.823);
-  --popover-foreground: oklch(0.141 0.005 285.823);
-  --sidebar-foreground: oklch(0.141 0.005 285.823);
+  --foreground: oklch(0.2046 0 0);
+  --card-foreground: oklch(0.2046 0 0);
+  --popover-foreground: oklch(0.2046 0 0);
+  --sidebar-foreground: oklch(0.2046 0 0);
 
   --background: oklch(1 0 0);
   --card: oklch(1 0 0);
@@ -90,7 +90,8 @@
 }
 
 .dark {
-  --background: oklch(0.141 0.005 285.823);
+  --background: oklch(0.2046 0 0);
+  /* --background: oklch(0.141 0.005 285.823); */
   --primary: oklch(0.92 0.004 286.32);
   --muted-foreground: oklch(0.705 0.015 286.067);
   --destructive: oklch(0.704 0.191 22.216);
@@ -136,4 +137,40 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/** Custom Scrollbar from ReUI **/
+@layer base {
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--input);
+    border-radius: 5px;
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--input) transparent;
+  }
+}
+
+/** Custom Container **/
+@utility container {
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+  @media (width >= --theme(--breakpoint-sm)) {
+    max-width: none;
+  }
+  @media (width >= 1440px) {
+    padding-inline: 2rem;
+    max-width: 1440px;
+  }
+}
+
+/** Smooth scroll **/
+html {
+  scroll-behavior: smooth;
 }
