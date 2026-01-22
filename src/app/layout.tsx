@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import "@/app/globals.css";
 
 import { ClerkProvider } from "@clerk/nextjs";
+import { dark, shadcn } from "@clerk/themes";
 import { ThemeProvider } from "@/components/theme-provider";
 import ConvexClientProvider from "./ConvexClientProvider";
 
@@ -22,10 +23,14 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={cn("isolate text-base antialiased", inter.className)}>
-        <ClerkProvider>
+        <ClerkProvider
+          appearance={{
+            theme: shadcn,
+          }}
+        >
           <ThemeProvider
             attribute="class"
-            defaultTheme="system"
+            defaultTheme="dark"
             enableSystem
             disableTransitionOnChange
           >
