@@ -5,7 +5,6 @@ import "@/app/globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider";
 import ConvexClientProvider from "./ConvexClientProvider";
-import YapperNavBar from "@/components/yapper-nav-bar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
