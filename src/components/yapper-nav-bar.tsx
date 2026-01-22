@@ -25,7 +25,9 @@ export default function YapperNavBar() {
           preload={true}
           loading="eager"
         />
-        <div className={cn("text-2xl", pacifico.className)}>Yapper</div>
+        <div className={cn("text-primary text-2xl", pacifico.className)}>
+          Yapper
+        </div>
       </div>
       <div className="flex h-16 items-center justify-end gap-4 p-4">
         <ModeToggle />
