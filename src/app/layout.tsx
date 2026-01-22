@@ -11,7 +11,7 @@ import ConvexClientProvider from "./ConvexClientProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Yapper App",
+  title: "Yapper",
   description: "A messaging platform that respects privacy.",
 };
 
