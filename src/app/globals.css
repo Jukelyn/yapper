@@ -44,6 +44,28 @@
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
+  --color-pumpkin-spice-50: oklch(96.35% 0.02 58.07);
+  --color-pumpkin-spice-100: oklch(92.83% 0.042 56.75);
+  --color-pumpkin-spice-200: oklch(85.72% 0.084 54.54);
+  --color-pumpkin-spice-300: oklch(79.34% 0.127 53.56);
+  --color-pumpkin-spice-400: oklch(73.67% 0.166 50.73);
+  --color-pumpkin-spice-500: oklch(68.81% 0.197 44.33);
+  --color-pumpkin-spice-600: oklch(58.44% 0.165 45.15);
+  --color-pumpkin-spice-700: oklch(47.45% 0.131 45.94);
+  --color-pumpkin-spice-800: oklch(35.79% 0.096 47.41);
+  --color-pumpkin-spice-900: oklch(23.48% 0.057 53.76);
+  --color-pumpkin-spice-950: oklch(19.24% 0.044 55.57);
+  /* --color-pumpkin-spice-50: #fef0e6;
+  --color-pumpkin-spice-100: #fee1cd;
+  --color-pumpkin-spice-200: #fcc29c;
+  --color-pumpkin-spice-300: #fba46a;
+  --color-pumpkin-spice-400: #fa8638;
+  --color-pumpkin-spice-500: #f96706;
+  --color-pumpkin-spice-600: #c75305;
+  --color-pumpkin-spice-700: #953e04;
+  --color-pumpkin-spice-800: #632903;
+  --color-pumpkin-spice-900: #321501;
+  --color-pumpkin-spice-950: #230e01; */
 }
 
 :root {
@@ -66,7 +88,7 @@
   --card: oklch(1 0 0);
   --popover: oklch(1 0 0);
 
-  --primary: oklch(0.21 0.006 285.885);
+  --primary: var(--color-pumpkin-spice-500);
   --secondary-foreground: oklch(0.21 0.006 285.885);
   --accent-foreground: oklch(0.21 0.006 285.885);
   --sidebar-primary: oklch(0.21 0.006 285.885);
@@ -92,7 +114,8 @@
 .dark {
   --background: oklch(0.2046 0 0);
   /* --background: oklch(0.141 0.005 285.823); */
-  --primary: oklch(0.92 0.004 286.32);
+  --primary: var(--color-pumpkin-spice-400);
+  /* --primary: oklch(0.92 0.004 286.32); */
   --muted-foreground: oklch(0.705 0.015 286.067);
   --destructive: oklch(0.704 0.191 22.216);
   --input: oklch(1 0 0 / 15%);
