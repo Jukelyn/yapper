@@ -1,11 +1,14 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sun, Moon } from "lucide-react";
 
-export function ModeToggle() {
+interface ModeTogglerProps extends React.HTMLAttributes<HTMLElement> {}
+
+export function ModeToggle({ className, ...props }: ModeTogglerProps) {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -26,7 +29,8 @@ export function ModeToggle() {
       variant="outline"
       size="icon"
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      className="flex items-center justify-center gap-2"
+      className={cn("flex items-center justify-center gap-2", className)}
+      {...props}
     >
       {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
     </Button>
