@@ -1,6 +1,6 @@
 "use client";
 
-import { SignInButton, UserButton } from "@clerk/nextjs";
+import { SignInButton, UserButton, UserAvatar } from "@clerk/nextjs";
 import { Authenticated, Unauthenticated } from "convex/react";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
@@ -28,7 +28,7 @@ const pacifico = Pacifico({
 
 const NavLinks = () => (
   <NavigationMenu>
-    <NavigationMenuList className="gap-1s flex flex-col md:flex-row">
+    <NavigationMenuList className="flex flex-col gap-1 md:flex-row">
       {["features", "support", "privacy"].map((item) => (
         <NavigationMenuItem key={item}>
           <Link href={`/${item}`}>
@@ -73,10 +73,12 @@ export default function YapperNavBar() {
           <Link href={"/app"}>
             <Button>Open Yapper</Button>
           </Link>
-          <UserButton />
+          <div className="hidden md:flex">
+            <UserButton />
+          </div>
         </Authenticated>
 
-        {/* Mobile hamburger (for mobile) */}
+        {/* Mobile hamburger menu */}
         <div className="md:hidden">
           <Sheet>
             <SheetTrigger asChild>
@@ -85,8 +87,21 @@ export default function YapperNavBar() {
               </Button>
             </SheetTrigger>
             <SheetContent className="flex-col items-center py-2" side="top">
-              <SheetTitle className="mt-1">More Information</SheetTitle>
+              <SheetTitle className="mt-10">More Information</SheetTitle>
+              <div className="border-accent-foreground/60 w-2/3 border" />
               <NavLinks />
+              <Authenticated>
+                <div className="border-accent-foreground/60 w-2/3 border" />
+                <Link href={"/profile"}>
+                  <Button
+                    className="text-accent-foreground m-2 border p-5"
+                    variant={"link"}
+                  >
+                    User Profile
+                    <UserAvatar />
+                  </Button>
+                </Link>
+              </Authenticated>
             </SheetContent>
           </Sheet>
         </div>
